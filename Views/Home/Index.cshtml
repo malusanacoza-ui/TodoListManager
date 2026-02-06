@@ -1,8 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+
+            <div class="card p-5">
+                <h1 class="display-5 fw-bold mb-3">
+                    📝 TodoList Manager
+                </h1>
+
+                <p class="lead text-muted mb-4">
+                    Organize your tasks, set priorities, pin important items,
+                    and access your to-do list from anywhere.
+                </p>
+
+                <div class="d-flex justify-content-center gap-3">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Tasks" asp-action="Index"
+                           class="btn btn-success btn-lg">
+                            View My Tasks
+                        </a>
+
+                        <a asp-controller="Tasks" asp-action="Create"
+                           class="btn btn-outline-secondary btn-lg">
+                            Add New Task
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Login"
+                           class="btn btn-success btn-lg">
+                            Log In
+                        </a>
+
+                        <a asp-area="Identity" asp-page="/Account/Register"
+                           class="btn btn-outline-secondary btn-lg">
+                            Sign Up
+                        </a>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>
