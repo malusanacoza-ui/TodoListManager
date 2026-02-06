@@ -1,62 +1,77 @@
 ﻿@model TodoTask
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Task";
 }
 
-<h1>Create</h1>
-
-<h4>TodoTask</h4>
+<h1>Create Task</h1>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+    <div class="col-md-6">
+
+        <form asp-action="Create" asp-controller="Tasks" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- VALIDATION SUMMARY -->
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <!-- TITLE -->
+            <div class="form-group mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- DESCRIPTION -->
+            <div class="form-group mb-3">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsCompleted" /> @Html.DisplayNameFor(model => model.IsCompleted)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPinned" /> @Html.DisplayNameFor(model => model.IsPinned)
-                </label>
-            </div>
-            <div class="form-group">
+
+            <!-- PRIORITY -->
+            <div class="form-group mb-3">
                 <label asp-for="Priority" class="control-label"></label>
-                <select asp-for="Priority" class="form-control"></select>
+                <select asp-for="Priority"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<PriorityLevel>()">
+                    <option value="">-- Select Priority --</option>
+                </select>
                 <span asp-validation-for="Priority" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+
+            <!-- PIN -->
+            <div class="form-check mb-2">
+                <input class="form-check-input" asp-for="IsPinned" />
+                <label class="form-check-label" asp-for="IsPinned">
+                    Pin this task
+                </label>
             </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+
+            <!-- COMPLETED -->
+            <div class="form-check mb-4">
+                <input class="form-check-input" asp-for="IsCompleted" />
+                <label class="form-check-label" asp-for="IsCompleted">
+                    Mark as completed
+                </label>
             </div>
+
+            <!-- BUTTONS -->
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-success">
+                    Create Task
+                </button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    Back
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
